@@ -1,0 +1,18 @@
+.public-evidence-notice{border:1px solid #d9e5eb;background:#f6f9fc;border-radius:10px;margin:0 0 25px;padding:18px 20px;color:#42556a}
+.public-evidence-heading{display:flex;gap:10px;align-items:flex-start}.public-evidence-heading>svg{color:#4c789d;flex:none;margin-top:2px}.public-evidence-heading>div{flex:1}.public-evidence-heading strong{font-size:14px;color:#263f55}.public-evidence-heading p{margin:7px 0 0;font-size:12px;line-height:1.65}.public-evidence-heading>a{font-size:12px;color:#3b729b;display:flex;align-items:center;gap:4px;white-space:nowrap;text-decoration:none}
+.public-evidence-metrics{display:flex;flex-wrap:wrap;gap:12px 24px;margin:15px 0;font-size:11px;color:#617587}.public-evidence-metrics b{font-size:16px;color:#294d69;margin-right:5px}.public-method{border-top:1px solid #dce6ed;padding-top:11px}.public-method>summary{font-size:12px;cursor:pointer;color:#3e719a}.public-method-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:23px 0}.public-method-grid article>span{font-size:10px;color:#748c9f}.public-method h3{font-size:14px;margin:8px 0}.public-method p{font-size:12px;line-height:1.85}.public-examples{border-top:1px solid #dce6ed;padding-top:18px}.public-examples .outline{font-size:12px}.public-scope{display:flex;gap:9px;border-radius:7px;background:#edf3f7;padding:13px;font-size:11px;line-height:1.8;margin-top:20px}.public-scope>svg{flex:none;margin-top:3px}
+html[data-evo-mode="clinical-public"] .sidebar-bottom .pulse{color:#55798e}html[data-evo-mode="clinical-public"] .sidebar-bottom .status-dot{background:#879aaa;box-shadow:none}html[data-evo-mode="clinical-public"] .health-row small{line-height:1.7}html[data-evo-mode="clinical-public"] button:disabled{cursor:not-allowed}
+@media(max-width:800px){.public-method-grid{grid-template-columns:1fr;gap:12px}.public-evidence-notice{padding:15px}.public-evidence-metrics{gap:12px}.public-evidence-heading>a{font-size:10px}}
+@media(max-width:700px){
+  html[data-evo-mode="clinical-public"] .app-shell{display:block}
+  html[data-evo-mode="clinical-public"] .sidebar{display:flex;flex-direction:row;align-items:center;gap:5px;width:100%;min-width:0;min-height:0;height:auto;padding:10px;overflow-x:auto;position:sticky;top:0;z-index:10}
+  html[data-evo-mode="clinical-public"] .sidebar .brand,html[data-evo-mode="clinical-public"] .sidebar .side-section,html[data-evo-mode="clinical-public"] .sidebar .agent-state,html[data-evo-mode="clinical-public"] .sidebar .sidebar-bottom{display:none}
+  html[data-evo-mode="clinical-public"] .sidebar .nav{font-size:11px;width:auto;flex:none;gap:6px;padding:10px;white-space:nowrap;margin:0}
+  html[data-evo-mode="clinical-public"] .sidebar .nav>span,html[data-evo-mode="clinical-public"] .sidebar .nav>svg:not(:first-child){display:none}
+  html[data-evo-mode="clinical-public"] .sidebar .nav>svg:first-child{display:block;width:16px;height:16px;flex:none}
+  html[data-evo-mode="clinical-public"] main{width:100%;min-width:0}
+  html[data-evo-mode="clinical-public"] .content{padding:18px 12px}
+  html[data-evo-mode="clinical-public"] .card-head>div:first-child{min-width:0}
+  html[data-evo-mode="clinical-public"] .progress-ring{flex:none}
+  html[data-evo-mode="clinical-public"] .card-head h2,html[data-evo-mode="clinical-public"] .card-head p{overflow-wrap:anywhere}
+}

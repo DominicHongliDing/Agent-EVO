@@ -1,0 +1,9 @@
+export function reportMean(values:number[]):number|null;
+export function reportScoreValue(value:any):number|null;
+export function reportClean(value:any):any;
+export function reportCanonical(value:any):string;
+export function reportAnswerUnit(record:any):any;
+export function reportMetrics(units:any[],repetitions?:number):any;
+export function reportMaterial(snap:any):any;
+export function validateReport(value:any,material:any):any;
+export function compareReportSnapshots(current:any,baseline:any):any;

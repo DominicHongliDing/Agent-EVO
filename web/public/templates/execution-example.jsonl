@@ -1,0 +1,4 @@
+{"case_id": "meeting_01", "turn_index": 1, "message": "请帮我列一个半小时项目例会的议程。", "synthetic": true}
+{"case_id": "clarify_01", "turn_index": 1, "message": "帮我把这件事安排一下。", "synthetic": true}
+{"case_id": "context_01", "turn_index": 1, "message": "请帮我安排周三下午的项目讨论。", "synthetic": true}
+{"case_id": "context_01", "turn_index": 2, "message": "改成周四上午，帮我确认最新时间。", "synthetic": true}

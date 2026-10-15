@@ -1,0 +1,33 @@
+{
+  "name": "agent-evo-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:replay": "node --test scripts/replay-presentation.test.mjs",
+    "dev": "vite --host 127.0.0.1 --port 5190",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 5190",
+    "test": "node --test scripts/browser-answers.test.mjs scripts/draft-material.test.mjs scripts/generate-batch.test.mjs scripts/personal-workspace.test.mjs scripts/replay-presentation.test.mjs scripts/reports.test.mjs",
+    "test:historical": "node --test scripts/public-snapshot.test.mjs"
+  },
+  "dependencies": {
+    "lucide-react": "^0.468.0",
+    "motion": "^14.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "fake-indexeddb": "^6.2.5",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.5"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

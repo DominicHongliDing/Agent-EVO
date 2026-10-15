@@ -1,0 +1,23 @@
+name: Source checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  local-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.11.14'
+      - run: uv sync --python 3.12 --extra dev --locked
+      - run: npm --prefix web ci
+      - run: uv run pytest -q
+      - run: npm --prefix web test
+      - run: node --test integrations/workbench/*.test.mjs
+      - run: npm --prefix web run build

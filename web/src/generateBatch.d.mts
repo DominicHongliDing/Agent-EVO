@@ -1,0 +1,1 @@
+export function generateBatch(options:{initial?:any[];count:number;plan?:Record<string,number>;request:(input:any)=>Promise<any>;onBatch:(batch:any)=>void;stopped?:()=>boolean}):Promise<{rows:any[];target:number;requests:number;status:string}>;

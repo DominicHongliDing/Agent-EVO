@@ -1,0 +1,5 @@
+import {coverageKeys,coverageLabels,coverageGaps,validatePlan} from './coveragePlan.mjs'
+export default function CoveragePlanner({plan,cases,onChange}:{plan:Record<string,number>;cases:any[];onChange:(p:Record<string,number>)=>void}){
+ let error='',gaps:ReturnType<typeof coverageGaps>|undefined;try{validatePlan(plan);gaps=coverageGaps(plan,cases)}catch(e){error=(e as Error).message}
+ return <details className="report-options coverage-planner"><summary>调整场景配额 · {Object.values(plan).reduce((a,b)=>a+b,0)} 题目标{gaps?` · 缺 ${gaps.missing} 题`:''}</summary><p>可按产品重点调整数量；只补缺口，保留已有题目。上下文题至少两轮，停用题不计入覆盖。</p><div className="coverage-grid">{coverageKeys.map(k=><label key={k}>{coverageLabels[k]}<input aria-label={coverageLabels[k]+'目标题量'} type="number" min={0} max={100} step={1} value={plan[k]} onChange={e=>onChange({...plan,[k]:Number(e.target.value)})}/><small>已有 {gaps?.counts[k]??0} · 缺 {gaps?.deficits[k]??'—'}</small></label>)}</div>{error&&<p role="alert">{error}</p>}{gaps&&cases.length+gaps.missing>100&&<p role="alert">已有题目加缺口超过 100 题，请删减多余草稿或调整配额。</p>}</details>
+}

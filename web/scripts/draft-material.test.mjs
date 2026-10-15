@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {parseDraftMaterial,draftCoverage} from '../src/draftMaterial.mjs';
+test('malformed JSONL reports the actual line and never creates half a dataset',()=>{assert.throws(()=>parseDraftMaterial('{"message":"第一题"}\n\n{broken}'),/第 3 行/)});
+test('invalid question objects and duplicate ids fail before preview',()=>{assert.throws(()=>parseDraftMaterial('[null]'),/第 1 条/);assert.throws(()=>parseDraftMaterial('[{"turns":[{"message":""}]}]'),/第 1 条、第 1 轮/);assert.throws(()=>parseDraftMaterial('[{"case_id":"a","message":"甲"},{"case_id":"a","message":"乙"}]'),/ID「a」重复/)});
+test('uploaded confirmation is reset, multi-round inputs retained and coverage uses actual data',()=>{const rows=parseDraftMaterial(JSON.stringify({cases:[{message:'甲',category:'core',review_status:'confirmed'},{turns:[{message:'乙'},{message:'更正乙'}],category:'context'}]}));assert.equal(rows[0].review_status,'draft');const summary=draftCoverage(rows);assert.equal(summary.multi,1);assert.equal(summary.confirmed,0);assert.equal(summary.groups.find(g=>g.id==='context').count,1)});

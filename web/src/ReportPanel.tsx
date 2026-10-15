@@ -1,0 +1,52 @@
+import { useEffect, useState, type ReactNode } from 'react'
+import { ArrowRight, Download, FileText, Loader2, ShieldAlert, Sparkles } from 'lucide-react'
+import ReadableReport from './ReadableReport'
+import { createReport, loadReports, reportConfig, reportSnapshot, watchReport } from './reportClient'
+import { reportMarkdown, reportNumber as num, reportProfile, reportLabels, downloadReport } from './reportDocument'
+import { publicMode, personalMode } from './publicSnapshot'
+import './reports.css'
+import DecisionOverview from './DecisionOverview'
+import ReviewWorkbench from './ReviewWorkbench'
+import { compareReportSnapshots } from './reportCore.mjs'
+type Row=Record<string,any>
+const states:Record<string,string>={queued:'准备材料',interpreting:'模型解读中',validating:'校验证据引用',completed:'AI 解读已生成 · 待复核',failed:'生成失败',interrupted:'生成中断'}
+export default function ReportPanel({source,batchId,onOpen,children}:{source:'native'|'answers';batchId:string;onOpen:(id:string)=>void;children?:ReactNode}){
+  const [data,setData]=useState<Row>(),[tab,setTab]=useState('records'),[error,setError]=useState(''),[busy,setBusy]=useState(false),[config,setConfig]=useState<Row>(),[editing,setEditing]=useState(false),[key,setKey]=useState(''),[model,setModel]=useState('qwen3.8-max-0902'),[selected,setSelected]=useState(''),[historical,setHistorical]=useState<Row>(),[auto,setAuto]=useState(false)
+  const [baselineId,setBaselineId]=useState(''),[baseline,setBaseline]=useState<Row>()
+  async function refresh(){const d=await loadReports(source,batchId);setData(d);if(!personalMode)setAuto(d.watch)}
+  useEffect(()=>{let active=true;const load=()=>loadReports(source,batchId).then(d=>{if(active){setData(d);if(!personalMode)setAuto(d.watch)}}).catch(e=>active&&setError(e.message));void load();reportConfig().then(c=>{if(active){setConfig(c);setModel(c.model)}}).catch(e=>active&&setError(e.message));const timer=setInterval(load,5000);return()=>{active=false;clearInterval(timer)}},[source,batchId])
+  const job=data?.reports.find((r:Row)=>r.report_id===selected)||data?.reports[0],running=job&&['queued','interpreting','validating'].includes(job.status)
+  useEffect(()=>{let active=true;setHistorical(undefined);if(job?.stale)reportSnapshot(job.report_id).then(s=>active&&setHistorical(s)).catch(e=>active&&setError(e.message));return()=>{active=false}},[job?.report_id,job?.stale])
+  const snap=job?.stale?historical:data?.snapshot,m=data?.snapshot.metrics
+  useEffect(()=>{let active=true;setBaseline(undefined);if(baselineId)reportSnapshot(baselineId).then(s=>active&&setBaseline(s)).catch(e=>active&&setError(e.message));return()=>{active=false}},[baselineId])
+  const comparison=snap&&baseline?compareReportSnapshots(snap,baseline):undefined
+  async function action(fn:()=>Promise<void>){setBusy(true);setError('');try{await fn()}catch(e){setError((e as Error).message)}finally{setBusy(false)}}
+  // An explicit, one-shot browser opt-in only lasts for this mounted page.
+  useEffect(()=>{if(!personalMode||!auto||!data?.snapshot.units.length)return;if(data.snapshot.units.some((u:Row)=>['queued','running'].includes(u.execution)||['not_started','queued','running'].includes(u.assessment_status)))return;setAuto(false);void action(async()=>{const r=await createReport(source,batchId);setSelected(r.report_id);await refresh()})},[data,auto])
+  const launch=()=>action(async()=>{const c=await reportConfig();setConfig(c);if(!c.configured){setEditing(true);throw Error('请填写百炼 Key；如果已配置评分 Key，这里会自动复用。')}const r=await createReport(source,batchId,!!job);setSelected(r.report_id);setTab('report');await refresh()})
+  return <section className="report-panel" aria-label="批次评分与测试报告">
+    <nav className="report-tabs" aria-label="批次视图">{[['records','逐条记录'],['report','评分与报告'],['review','问题审核'],['overview','汇总概览']].map(([id,label])=><button key={id} className={tab===id?'active':''} aria-current={tab===id?'page':undefined} onClick={()=>setTab(id)}>{label}</button>)}</nav>
+    {error&&<p className="report-error" role="alert">{error}<button className="text-button" onClick={()=>setError('')}>关闭</button></p>}
+    {!data?<p className="report-muted">正在整理已有结果…</p>:<>
+      {tab==='overview'&&<div className="report-overview" role="region" aria-label="评分概览" tabIndex={0}><div className="report-score-grid"><div className="report-score"><span>{m.score!=null?'本批次质量得分':m.partial_score!=null?'已完整评分部分':'质量得分待补齐'}</span><div><strong>{num(m.score??m.partial_score)}</strong><small>/ 100</small></div><p>{m.scored}/{m.planned} 条完整评分{m.score==null?' · 暂无完整批次总分':''}</p></div><div className="report-coverage"><span>评分覆盖</span><strong>{m.planned?num(m.scored/m.planned*100)+'%':'—'}</strong><div className="report-meter"><i style={{width:(m.planned?m.scored/m.planned*100:0)+'%'}}/></div><p>{m.assessed??data.snapshot.units.filter((u:Row)=>u.assessment_status==='completed').length} 条已完成评审 · {m.execution_failed} 条执行失败 · {m.planned-m.scored} 条尚无完整评分</p></div><div className={'report-risk'+(Object.values(m.critical).some(Boolean)?' has-risk':'')}><ShieldAlert size={20}/><span>关键风险单独复核</span><p>规则发现 <b>{m.critical.rule}</b> · AI 待复核 <b>{m.critical.ai_pending}</b> · 人工确认 <b>{m.critical.human}</b></p><small>另有 {m.critical_unjudged??0} 项关键安全待判断。高平均分不抵消风险。</small></div></div>
+        <DecisionOverview snapshot={data.snapshot} onOpen={onOpen}/>
+        <details className="report-options"><summary>各项表现与评分覆盖</summary><div className="report-profile-grid">{m.profiles.map((p:Row)=><article key={p.profile}><h3>{reportProfile(p.profile)}</h3>{Object.entries(p.dimensions).map(([k,v])=>{const d=v as Row;return <div className="report-dimension" key={k}><span>{reportLabels[k]||k}</span><div className="report-meter"><i style={{width:(d.score==null?0:d.score*20)+'%'}}/></div><b>{num(d.score)}/5</b><small>{d.scored}/{d.planned} 已评分</small></div>})}</article>)}</div></details>
+        <div className="report-next"><div><h3>把结果变成下一步改进</h3><p>基础报告已包含指标与问题清单。AI 可结合原文提出解释和回归建议。</p></div><button className="primary" onClick={()=>setTab('report')}><FileText size={16}/>查看测试报告 <ArrowRight size={14}/></button></div>
+        <p className="report-muted">分数仅代表当前材料与评分标准；缺少参考答案、执行失败与待判断不会按通过处理。{(publicMode||data.snapshot.units.some((u:Row)=>u.source?.agent==='clinical'))?'Clinical 工程评测不代表医生临床验证。':''}</p><button className="text-button" onClick={()=>setTab('records')}>查看记录或补齐独立评分 →</button>
+      </div>}
+      {tab==='report'&&<div className="report-body" role="region" aria-label="测试报告内容" tabIndex={0}><div className="report-actions"><div><h3>测试报告</h3><p>{job?.result?.error_stage==='preflight'?'基础报告已保存 · AI 解读待恢复':job?states[job.status]:'基础报告 · 无需新增模型调用'}</p></div><div>{!publicMode&&<button className="primary" disabled={busy||running} onClick={()=>void launch()}>{running?<Loader2 size={16} className="report-spin"/>:<Sparkles size={16}/>} {running?states[job.status]:job?'重新生成 AI 解读':'生成 AI 解读'}</button>}<button className="outline" disabled={!snap} onClick={()=>snap&&downloadReport(snap,job,false,comparison)}><Download size={15}/>Markdown</button><button className="outline" disabled={!snap} onClick={()=>snap&&downloadReport(snap,job,true,comparison)}>HTML / 打印 PDF</button></div></div>
+        {(!publicMode || data.reports.length > 0) && <details className="report-options"><summary>报告设置与版本<span>{data.reports.length} 个已保存版本</span></summary>
+        {!publicMode&&<><div className="report-config"><span>报告模型：{config?.model||model} · 百炼</span><button className="text-button" onClick={()=>setEditing(!editing)}>{editing?'收起配置':'模型与 Key'}</button><label><input type="checkbox" checked={auto} onChange={e=>void action(async()=>{const enabled=e.target.checked;const c=await reportConfig();setConfig(c);if(enabled&&!c.configured){setEditing(true);throw Error('请先配置百炼 Key')}if(!personalMode)await watchReport(source,batchId,enabled);setAuto(enabled)})}/>本批次评分结束后生成一次 AI 解读</label></div>
+        {editing&&<div className="report-config-form"><label>百炼 API Key<input type="password" autoComplete="off" value={key} onChange={e=>setKey(e.target.value)} placeholder={config?.configured?'已配置，可留空复用':'仅保存在内存'}/></label><label>报告模型<input value={model} onChange={e=>setModel(e.target.value)}/></label><button className="outline" disabled={busy} onClick={()=>void action(async()=>{const c=await reportConfig({model,...(key?{api_key:key}:{})});setConfig(c);setKey('');setEditing(false)})}>保存配置</button></div>}
+        <p className="report-muted">使用独立报告模型，可能消耗百炼额度。请在百炼开启“免费额度用完即停”；收到额度耗尽错误会停止，不自动换模型。{personalMode?'请保持此页面打开；Key 仅存于页面内存，刷新会中断报告生成。':'本地任务会保存进度，刷新页面后可继续查看。'}</p></>}
+        {data.reports.length>0&&<label className="report-history">报告版本<select aria-label="报告版本" value={job?.report_id} onChange={e=>setSelected(e.target.value)}>{data.reports.map((r:Row)=><option key={r.report_id} value={r.report_id}>{new Date(r.created_at).toLocaleString('zh-CN')} · {states[r.status]}{r.stale?' · 旧快照':''}</option>)}</select></label>}
+        {data.reports.length>1&&<label className="report-history">基线对照<select aria-label="选择报告基线" value={baselineId} onChange={e=>setBaselineId(e.target.value)}><option value="">不比较</option>{data.reports.filter((r:Row)=>r.report_id!==job?.report_id&&r.status==='completed').map((r:Row)=><option key={r.report_id} value={r.report_id}>{new Date(r.created_at).toLocaleString('zh-CN')} · {r.snapshot_id.slice(0,8)}</option>)}</select></label>}
+        </details>}
+        {job?.stale&&<p className="report-warning">评测结果已变化。下方保留该版本生成时的快照；重新生成可使用最新结果。</p>}{job?.result?.error&&<p role="alert" className="report-warning">{job.result.error}</p>}
+        {snap?<><ReadableReport text={reportMarkdown(snap,job,comparison)}/><details className="report-evidence"><summary>打开原始记录与引用位置</summary>{snap.units.map((u:Row)=><div key={u.id}><button className="text-button" onClick={()=>onOpen(u.id)}>{u.title} →</button><small>{u.id}</small>{job?.result?.report&&Object.values(job.result.report).flatMap((rows:any)=>(rows as Row[]).flatMap(r=>r.evidence)).filter((e:Row)=>e.record_id===u.id).map((e:Row,i:number)=><blockquote key={i}><b>{e.ref}</b><p>{e.quote}</p></blockquote>)}</div>)}</details><details className="report-evidence"><summary>原始报告数据</summary><pre>{JSON.stringify({snapshot:snap,result:job?.result},null,2)}</pre></details></>:<p>正在读取历史快照…</p>}
+      </div>}
+      {tab==='records'&&<div className="report-records" role="region" aria-label="逐条评测记录" tabIndex={0}>{children}</div>}
+      {tab==='review'&&<ReviewWorkbench snapshot={data.snapshot} source={source} batchId={batchId} onOpen={onOpen}/>}
+    </>}
+  </section>
+}

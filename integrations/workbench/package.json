@@ -1,0 +1,15 @@
+{
+  "devDependencies": {
+    "drizzle-kit": "^0.31.11",
+    "drizzle-orm": "^0.45.4"
+  },
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "test": "node --test *.test.mjs"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
