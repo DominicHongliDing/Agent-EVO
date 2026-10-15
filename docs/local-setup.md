@@ -67,7 +67,7 @@ uv run python examples/evo_connector.py --platform http://127.0.0.1:8090 --url h
 
 ## Clinical 与 UniHR 的关系
 
-通用评测不依赖这两个产品。仓库保留早期专用适配器和合成合同测试，当前内置业务示例入口只展示 Clinical。要真实执行 Clinical，需要独立部署对应业务服务，并配置 `EVO_CLINICAL_BASE_URL`；可选源码指纹与证据采集通过 `EVO_CLINICAL_SOURCE_ROOT` 指定。
+通用评测不依赖这两个产品。仓库保留早期专用适配器和合成接口与行为测试，当前内置业务示例入口只展示 Clinical。要真实执行 Clinical，需要独立部署对应业务服务，并配置 `EVO_CLINICAL_BASE_URL`；可选源码指纹与证据采集通过 `EVO_CLINICAL_SOURCE_ROOT` 指定。
 
 本仓库不包含 Clinical 服务、知识库或其模型凭证。`external/` 下的默认路径只是可选依赖位置，不会自动下载其他项目。官网已有的历史案例也不会被复制到新建的本地工作台。
 
