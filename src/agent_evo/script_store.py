@@ -170,4 +170,4 @@ def update_binding(store, run_id, **fields):
 
 
 def default_interpreter():
-    return str(Path(sys.executable).resolve())
+    return str(Path(sys.executable).absolute())

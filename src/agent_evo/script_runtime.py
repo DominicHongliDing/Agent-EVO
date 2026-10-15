@@ -13,7 +13,9 @@ from agent_evo.store import dumps, now
 
 
 def inspect_interpreter(interpreter, requirements=()):
-    path = Path(interpreter).resolve()
+    # On POSIX a venv's python is usually a symlink. Resolving it launches the
+    # base interpreter without the selected environment's installed dependencies.
+    path = Path(interpreter).absolute()
     if not path.is_file() or not path.name.lower().startswith('python'):
         raise ValueError('请选择本机 Python 解释器的绝对路径')
     try:
