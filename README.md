@@ -6,7 +6,17 @@ EVO 帮助产品、业务和开发同事一起检查 Agent 的表现。你可以
 
 修改提示词、模型或检索方式后，用原来的场景再测一次，就能具体核对哪些问题修好了、哪些还在。
 
-[在线体验](https://dominicspace.com/apps/evaluation/index.html) · [看一个评测案例](https://dominicspace.com/apps/evaluation/index.html?space=history&view=story) · [产品设计](docs/product-design.md) · [本地运行](docs/local-setup.md) · [接入自己的 Agent](web/public/templates/connector-guide.md)
+[看一次评测](https://dominicspace-agent-showcase.peterzhukejie2020.chatgpt.site/apps/evaluation/index.html?space=history&view=story) · [自己试一遍](https://dominicspace-agent-showcase.peterzhukejie2020.chatgpt.site/apps/evaluation/index.html?space=mine&view=evaluate) · [产品设计](docs/product-design.md) · [本地运行](docs/local-setup.md) · [接入自己的 Agent](web/public/templates/connector-guide.md)
+
+## 第一次看，从一个出错的回答开始
+
+[打开案例导览](https://dominicspace-agent-showcase.peterzhukejie2020.chatgpt.site/apps/evaluation/index.html?space=history&view=story)，按这三个步骤阅读，无需配置 API Key：
+
+1. **先看实际对话**：用户把“两周”改为“三天”，AI 却没有按新信息作出总结。
+2. **回看处理过程**：默认用中文说明做了什么，点击步骤看输入和结果，再展开查看原始执行记录。
+3. **核对判断依据**：对照原文与评审意见，区分已经发现的问题和还需要确认的原因。
+
+这里展示虚构病例的实际历史测试，保留了出错的回答；尚未记录修复后在相同条件下的测试结果。浏览记录不调用模型，自己进行 AI 出题、评审或分析时才需要配置个人 API Key。
 
 ## 为什么做 EVO
 
@@ -52,7 +62,7 @@ flowchart LR
 
 在 EVO 中，可以为这个场景写下明确要求：**后续回答采用用户最新确认的时间**。审核时对照前后两轮内容，标出哪句话没有做到。确认问题后，保存这道题；调整上下文处理方式后再测一次，看看回答有没有变化。
 
-仓库自带的[回答模板](web/public/templates/answers.csv)保留了这个故意答错的合成例子，可以直接导入查看。在线还有一个 [Clinical 多轮更正案例](https://dominicspace.com/apps/evaluation/index.html?space=history&view=story)。
+仓库自带的[回答模板](web/public/templates/answers.csv)保留了这个故意答错的合成例子，可以直接导入查看。在线还有一个 [Clinical 多轮更正案例](https://dominicspace-agent-showcase.peterzhukejie2020.chatgpt.site/apps/evaluation/index.html?space=history&view=story)。
 
 ## AI 在里面做什么
 
