@@ -6,7 +6,7 @@ EVO 帮助产品、业务和开发同事一起检查 Agent 的表现。你可以
 
 修改提示词、模型或检索方式后，用原来的场景再测一次，就能具体核对哪些问题修好了、哪些还在。
 
-[看一次评测](https://dominicspace-agent-showcase.peterzhukejie2020.chatgpt.site/apps/evaluation/index.html?space=history&view=story) · [自己试一遍](https://dominicspace-agent-showcase.peterzhukejie2020.chatgpt.site/apps/evaluation/index.html?space=mine&view=evaluate) · [产品设计](docs/product-design.md) · [本地运行](docs/local-setup.md) · [接入自己的 Agent](web/public/templates/connector-guide.md)
+[看一次评测](https://dominicspace-agent-showcase.peterzhukejie2020.chatgpt.site/apps/evaluation/index.html?space=history&view=story) · [自己试一遍](https://dominicspace-agent-showcase.peterzhukejie2020.chatgpt.site/apps/evaluation/index.html?space=mine&view=evaluate) · [核心案例](docs/cases/correction-review.md) · [产品设计](docs/product-design.md) · [本地运行](docs/local-setup.md) · [接入自己的 Agent](web/public/templates/connector-guide.md)
 
 ## 第一次看，从一个出错的回答开始
 
@@ -63,6 +63,12 @@ flowchart LR
 在 EVO 中，可以为这个场景写下明确要求：**后续回答采用用户最新确认的时间**。审核时对照前后两轮内容，标出哪句话没有做到。确认问题后，保存这道题；调整上下文处理方式后再测一次，看看回答有没有变化。
 
 仓库自带的[回答模板](web/public/templates/answers.csv)保留了这个故意答错的合成例子，可以直接导入查看。在线还有一个 [Clinical 多轮更正案例](https://dominicspace-agent-showcase.peterzhukejie2020.chatgpt.site/apps/evaluation/index.html?space=history&view=story)。
+
+## 把一条问题讲清楚，再安排复测
+
+[从病例更正失败到复测要求](docs/cases/correction-review.md)，展开了同一条记录怎样供产品、业务和开发共同核对：先确定未满足的要求，再查看引文与处理过程，修正不准确的评审意见，最后保存后续验证条件。
+
+这也是对 EVO 本身的要求：首次使用者能不能找到依据，确认问题，并知道下一步该做什么。[产品设计说明](docs/product-design.md)补充了范围选择、AI 与人工分工、异常处理和使用验证计划。
 
 ## AI 在里面做什么
 

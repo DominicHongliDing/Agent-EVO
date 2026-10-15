@@ -1,0 +1,75 @@
+{
+  "description": "虚构教学病例的历史运行摘录；保留原文，不包含完整执行记录。",
+  "source_url": "https://dominicspace-agent-showcase.peterzhukejie2020.chatgpt.site/apps/evaluation/runs/run_c0a39b1970e24bce9dc55e0dbf83e043.json",
+  "source_run_id": "run_c0a39b1970e24bce9dc55e0dbf83e043",
+  "data_classification": "synthetic",
+  "repair_retest": "not_recorded",
+  "turns": [
+    {
+      "turn": 1,
+      "user": "这几天睡不好，大概持续了两周。我想先整理一下情况，需要补充哪些信息？",
+      "answer": {
+        "clinician_confirmation_items": [],
+        "sections": [
+          {
+            "content": "输入更具体的病例问题后，系统会自动判断是否需要检索证据。",
+            "title": "下一步"
+          }
+        ],
+        "summary": "当前问题临床信息不足，暂不调用 RAG。请补充症状、病程、风险、用药或需要决策的问题。"
+      },
+      "finished_at": "2026-10-09T14:06:31.056323+00:00",
+      "version": {
+        "chat_model": "qwen3.7-plus",
+        "code_version": "workspace-uncommitted",
+        "corpus_version": "clinical-corpus-1167-v1",
+        "embedding_model": "deterministic-hash-v1",
+        "graph_version": "clinical_graph_v8_subgraphs",
+        "prompt_skill_id": null,
+        "prompt_skill_version": null,
+        "retrieval_config_version": "hybrid-rerank-v2-entity-aware",
+        "router_model": "qwen3.6-flash",
+        "safety_policy_version": "deterministic-clinical-v2-repair-loop"
+      },
+      "observed_trace": {
+        "case_context_loaded": false,
+        "case_context_used": false,
+        "case_context_chars": 0,
+        "case_memory_read": false
+      }
+    },
+    {
+      "turn": 2,
+      "user": "我刚才说错了，不是两周，是三天。请按三天这个时间帮我总结一下目前的问题。",
+      "answer": {
+        "clinician_confirmation_items": [],
+        "sections": [
+          {
+            "content": "输入更具体的病例问题后，系统会自动判断是否需要检索证据。",
+            "title": "下一步"
+          }
+        ],
+        "summary": "当前问题临床信息不足，暂不调用 RAG。请补充症状、病程、风险、用药或需要决策的问题。"
+      },
+      "finished_at": "2026-10-09T14:06:34.872297+00:00",
+      "version": {
+        "chat_model": "qwen3.7-plus",
+        "code_version": "workspace-uncommitted",
+        "corpus_version": "clinical-corpus-1167-v1",
+        "embedding_model": "deterministic-hash-v1",
+        "graph_version": "clinical_graph_v8_subgraphs",
+        "prompt_skill_id": null,
+        "prompt_skill_version": null,
+        "retrieval_config_version": "hybrid-rerank-v2-entity-aware",
+        "router_model": "qwen3.6-flash",
+        "safety_policy_version": "deterministic-clinical-v2-repair-loop"
+      },
+      "observed_trace": {
+        "case_context_loaded": false,
+        "case_context_used": false,
+        "case_context_chars": 0,
+        "case_memory_read": false
+      }
+    }
+  ]
+}
