@@ -2,7 +2,7 @@
 
 产品负责人、业务审核者和开发者需要对同一条问题形成明确的判断。本例使用 Clinical 的历史测试，说明 EVO 如何组织原文、评审意见与执行依据，再留下修复后的测试要求。
 
-[返回项目](../../README.md) · [产品设计](../product-design.md) · [在线案例](https://dominicspace-agent-showcase.peterzhukejie2020.chatgpt.site/apps/evaluation/index.html?space=history&view=story) · [原文摘录](evidence/clinical-correction.json)
+[返回项目](../../README.md) · [产品设计](../product-design.md) · [在线案例](https://dominicspace.com/apps/evaluation/index.html?space=history&view=story) · [原文摘录](evidence/clinical-correction.json)
 
 案例材料为虚构病例的实际失败记录，尚无修复后按相同条件重测的结果。
 

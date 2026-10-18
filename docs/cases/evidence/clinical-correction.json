@@ -1,6 +1,6 @@
 {
   "description": "虚构教学病例的历史运行摘录；保留原文，不包含完整执行记录。",
-  "source_url": "https://dominicspace-agent-showcase.peterzhukejie2020.chatgpt.site/apps/evaluation/runs/run_c0a39b1970e24bce9dc55e0dbf83e043.json",
+  "source_url": "https://dominicspace.com/apps/evaluation/runs/run_c0a39b1970e24bce9dc55e0dbf83e043.json",
   "source_run_id": "run_c0a39b1970e24bce9dc55e0dbf83e043",
   "data_classification": "synthetic",
   "repair_retest": "not_recorded",

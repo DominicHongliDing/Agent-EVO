@@ -6,7 +6,7 @@ EVO 是面向产品、业务和研发团队的 Agent 评测工作台。团队可
 
 当前已公开平台源码、本地运行指南与在线案例。浏览已有记录无需 API Key；AI 出题、评审和报告需要配置自己的模型凭证。
 
-[在线评测案例](https://dominicspace-agent-showcase.peterzhukejie2020.chatgpt.site/apps/evaluation/index.html?space=history&view=story) · [产品设计](docs/product-design.md) · [本地运行](docs/local-setup.md)
+[在线评测案例](https://dominicspace.com/apps/evaluation/index.html?space=history&view=story) · [产品设计](docs/product-design.md) · [本地运行](docs/local-setup.md)
 
 ## 给谁用、完成什么
 
@@ -44,7 +44,7 @@ flowchart LR
 
 案例使用一条 Clinical 测试记录：用户更正病程后，回答没有完成总结。产品与业务人员核对原文、确认问题，开发者再依据对话和执行记录排查，修复后按原要求重测。
 
-[阅读核心案例](docs/cases/correction-review.md) · [打开历史记录](https://dominicspace-agent-showcase.peterzhukejie2020.chatgpt.site/apps/evaluation/index.html?space=history&view=story) · [查看原文摘录](docs/cases/evidence/clinical-correction.json)
+[阅读核心案例](docs/cases/correction-review.md) · [打开历史记录](https://dominicspace.com/apps/evaluation/index.html?space=history&view=story) · [查看原文摘录](docs/cases/evidence/clinical-correction.json)
 
 这条记录来自虚构病例的实际测试，修复后按相同条件重测的结果尚待补齐。另有[回答导入模板](web/public/templates/answers.csv)，包含故意使用旧会议时间的合成例子，可直接导入练习审核。
 
@@ -69,7 +69,7 @@ flowchart LR
 
 ## 在线体验
 
-[公开案例](https://dominicspace-agent-showcase.peterzhukejie2020.chatgpt.site/apps/evaluation/index.html?space=history&view=story)可直接查看对话、处理过程与判断依据；[自己的评测空间](https://dominicspace-agent-showcase.peterzhukejie2020.chatgpt.site/apps/evaluation/index.html?space=mine&view=evaluate)支持导入材料、准备测试集和后续评审。
+[公开案例](https://dominicspace.com/apps/evaluation/index.html?space=history&view=story)可直接查看对话、处理过程与判断依据；[自己的评测空间](https://dominicspace.com/apps/evaluation/index.html?space=mine&view=evaluate)支持导入材料、准备测试集和后续评审。
 
 ## 需求来源与我的工作
 
